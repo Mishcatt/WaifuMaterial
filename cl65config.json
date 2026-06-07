@@ -1,0 +1,5 @@
+{
+  "executable": "cl65",
+  "input": "main.s",
+  "params": "--verbose -C cnrom256.cfg -o waifu.nes"
+}
