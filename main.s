@@ -438,42 +438,42 @@ main_loop:
         sta banner3y 
         sta banner4y 
     :
-    lda banner1y
-    sta OAM+SpriteBanner00y
-    sta OAM+SpriteBanner01y
-    sta OAM+SpriteBanner02y
-    sta OAM+SpriteBanner03y
-    sta OAM+SpriteBanner04y
-    sta OAM+SpriteBanner05y
-    sta OAM+SpriteBanner06y
-    sta OAM+SpriteBanner07y
-    lda banner2y
-    sta OAM+SpriteBanner08y
-    sta OAM+SpriteBanner09y
-    sta OAM+SpriteBanner10y
-    sta OAM+SpriteBanner11y
-    sta OAM+SpriteBanner12y
-    sta OAM+SpriteBanner13y
-    sta OAM+SpriteBanner14y
-    sta OAM+SpriteBanner15y
-    lda banner3y
-    sta OAM+SpriteBanner16y
-    sta OAM+SpriteBanner17y
-    sta OAM+SpriteBanner18y
-    sta OAM+SpriteBanner19y
-    sta OAM+SpriteBanner20y
-    sta OAM+SpriteBanner21y
-    sta OAM+SpriteBanner22y
-    sta OAM+SpriteBanner23y
-    lda banner4y
-    sta OAM+SpriteBanner24y
-    sta OAM+SpriteBanner25y
-    sta OAM+SpriteBanner26y
-    sta OAM+SpriteBanner27y
-    sta OAM+SpriteBanner28y
-    sta OAM+SpriteBanner29y
-    sta OAM+SpriteBanner30y
-    sta OAM+SpriteBanner31y
+    ; lda banner1y
+    ; sta OAM+SpriteBanner00y
+    ; sta OAM+SpriteBanner01y
+    ; sta OAM+SpriteBanner02y
+    ; sta OAM+SpriteBanner03y
+    ; sta OAM+SpriteBanner04y
+    ; sta OAM+SpriteBanner05y
+    ; sta OAM+SpriteBanner06y
+    ; sta OAM+SpriteBanner07y
+    ; lda banner2y
+    ; sta OAM+SpriteBanner08y
+    ; sta OAM+SpriteBanner09y
+    ; sta OAM+SpriteBanner10y
+    ; sta OAM+SpriteBanner11y
+    ; sta OAM+SpriteBanner12y
+    ; sta OAM+SpriteBanner13y
+    ; sta OAM+SpriteBanner14y
+    ; sta OAM+SpriteBanner15y
+    ; lda banner3y
+    ; sta OAM+SpriteBanner16y
+    ; sta OAM+SpriteBanner17y
+    ; sta OAM+SpriteBanner18y
+    ; sta OAM+SpriteBanner19y
+    ; sta OAM+SpriteBanner20y
+    ; sta OAM+SpriteBanner21y
+    ; sta OAM+SpriteBanner22y
+    ; sta OAM+SpriteBanner23y
+    ; lda banner4y
+    ; sta OAM+SpriteBanner24y
+    ; sta OAM+SpriteBanner25y
+    ; sta OAM+SpriteBanner26y
+    ; sta OAM+SpriteBanner27y
+    ; sta OAM+SpriteBanner28y
+    ; sta OAM+SpriteBanner29y
+    ; sta OAM+SpriteBanner30y
+    ; sta OAM+SpriteBanner31y
 
     lda #1
     sta ppuflag
