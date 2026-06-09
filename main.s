@@ -67,7 +67,7 @@ load_palettes:
 
     ldx #$00
     @bgloop:
-        lda bgPalettes, x
+        lda bgInitPalettes, x
         sta PPUDATA
         inx
         cpx #$10
@@ -190,6 +190,9 @@ init_variables:
     sta split1bank
     sta currentSplit1bank
     sta nmibank
+    sta scrollDelay
+    sta pauseScroll
+    sta currentPaletteSequence
     lda #3
     sta split2bank
 
@@ -254,8 +257,8 @@ main_loop:
             and #BUTTON_UP
             beq :+              ; is UP pushed?
                 lda scrollDelay
-                sec
-                sbc #1
+                clc
+                ror a
                 and #$0f
                 sta scrollDelay
         :
@@ -267,14 +270,15 @@ main_loop:
             and #BUTTON_DOWN
             beq :+              ; is DOWN pushed?
                 lda scrollDelay
-                clc
-                adc #1
+                sec
+                rol a
                 and #$0f
                 sta scrollDelay
         :
         lda frameCounter
+        and scrollDelay
         cmp scrollDelay
-        bcc @exitScrollHandler
+        bne @exitScrollHandler
             lda scrollDirection
             bne :+  ; scrollDirection == 0
                 inx 
@@ -282,8 +286,8 @@ main_loop:
             :       ; else
                 dex
             :
-            lda #0
-            sta frameCounter
+            ; lda #0
+            ; sta frameCounter
             jmp @exitScrollHandler
 
     @scrollPaused:           ; else
@@ -397,120 +401,6 @@ main_loop:
         lda #0
     :
     sta OAM+Sprite0y
-
-    ldx currentNametable
-    bne :++++++  ; if nametable 0
-        lda yscroll
-        cmp #208
-        bcs :+++++  ; yscroll < 208? 
-            lda #173
-            sec
-            sbc yscroll
-            sta banner1y
-            cmp #209
-            bcc :+
-                ldx #240
-                stx banner1y
-            :
-            clc
-            adc #8
-            sta banner2y
-            cmp #211
-            bcc :+
-                ldx #240
-                stx banner2y
-            :
-            clc
-            adc #8 
-            sta banner3y
-            cmp #219
-            bcc :+
-                ldx #240
-                stx banner3y
-            :
-            clc
-            adc #8 
-            sta banner4y 
-            cmp #221
-            bcc :+
-                ldx #240
-                stx banner4y
-            :
-            jmp :++++
-        :       ; else
-        lda #240
-        sta banner1y
-        sta banner2y
-        sta banner3y 
-        sta banner4y 
-        jmp :+++
-    :       ; else (nametable 2)
-        lda yscroll
-        cmp #173
-        bcc :+  ; yscroll >= 173? 
-            lda #157
-            sec
-            sbc yscroll
-            clc
-            sta banner1y
-            adc #8
-            cmp #240
-            bcs :++
-            sta banner2y
-            clc
-            adc #8 
-            cmp #240
-            bcs :++
-            sta banner3y 
-            clc
-            adc #8 
-            cmp #240
-            bcs :++
-            sta banner4y 
-            jmp :++
-        :       ; else
-        lda #240
-        sta banner1y
-        sta banner2y
-        sta banner3y 
-        sta banner4y 
-    :
-    ; lda banner1y
-    ; sta OAM+SpriteBanner00y
-    ; sta OAM+SpriteBanner01y
-    ; sta OAM+SpriteBanner02y
-    ; sta OAM+SpriteBanner03y
-    ; sta OAM+SpriteBanner04y
-    ; sta OAM+SpriteBanner05y
-    ; sta OAM+SpriteBanner06y
-    ; sta OAM+SpriteBanner07y
-    ; lda banner2y
-    ; sta OAM+SpriteBanner08y
-    ; sta OAM+SpriteBanner09y
-    ; sta OAM+SpriteBanner10y
-    ; sta OAM+SpriteBanner11y
-    ; sta OAM+SpriteBanner12y
-    ; sta OAM+SpriteBanner13y
-    ; sta OAM+SpriteBanner14y
-    ; sta OAM+SpriteBanner15y
-    ; lda banner3y
-    ; sta OAM+SpriteBanner16y
-    ; sta OAM+SpriteBanner17y
-    ; sta OAM+SpriteBanner18y
-    ; sta OAM+SpriteBanner19y
-    ; sta OAM+SpriteBanner20y
-    ; sta OAM+SpriteBanner21y
-    ; sta OAM+SpriteBanner22y
-    ; sta OAM+SpriteBanner23y
-    ; lda banner4y
-    ; sta OAM+SpriteBanner24y
-    ; sta OAM+SpriteBanner25y
-    ; sta OAM+SpriteBanner26y
-    ; sta OAM+SpriteBanner27y
-    ; sta OAM+SpriteBanner28y
-    ; sta OAM+SpriteBanner29y
-    ; sta OAM+SpriteBanner30y
-    ; sta OAM+SpriteBanner31y
 
     lda #1
     sta ppuflag

@@ -23,10 +23,11 @@
 
     currentNametable: .res 1
 
-    banner1y:       .res 1
-    banner2y:       .res 1
-    banner3y:       .res 1
-    banner4y:       .res 1
+    currentWaifuPalette:    .res 1
+    currentLogoPalette:     .res 1
+    currentBannerPalette:   .res 1
+    currentPaletteSequence: .res 1
+
     split1y:        .res 1
     split2y:        .res 1
     split1bank:     .res 1
