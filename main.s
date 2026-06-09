@@ -7,7 +7,7 @@
   .byte $4E, $45, $53, $1A
   .byte 2               ; 2x 16KB PRG code
   .byte 4               ; 4x  8KB CHR data
-  .byte $30, $00        ; mapper 3, horizontal mirroring
+  .byte $00, $00        ; mapper 3, horizontal mirroring
 
 .segment "VECTORS"
   ;; When an NMI happens (once per frame if enabled) the label nmi:
@@ -219,51 +219,88 @@ main_loop:
 
     jsr readjoyx2   ; read two gamepads
 
-    ldx yscroll
-
     lda buttons1
-    eor previousButtons1
+    eor previousButtons1    ; check which buttons changed
     and #BUTTON_START
-    beq :+
+    beq :+                  ; did START change?
         lda buttons1
         and #BUTTON_START
-        beq :+
+        beq :+              ; is START pushed?
             lda pauseScroll
             eor #$01
             sta pauseScroll
     :
 
-    lda pauseScroll
-    bne :+++
-        inx
-        lda buttons1
-        and #BUTTON_LEFT
-        beq :+ 
-            dex
-            jmp :+++++
-        :
-        lda buttons1
-        and #BUTTON_RIGHT
-        beq :+
-            dex
-            jmp :++++
-        :
-        jmp :+++
-    :
     lda buttons1
-    and #BUTTON_UP
-    beq :+ 
-        dex
-        jmp :+
-    :
-    lda buttons1
-    and #BUTTON_DOWN
-    beq :+ 
-        inx
+    eor previousButtons1    ; check which buttons changed
+    and #BUTTON_SELECT
+    beq :+                  ; did SELECT change?
+        lda buttons1
+        and #BUTTON_SELECT
+        beq :+              ; is SELECT pushed?
+            lda scrollDirection
+            eor #$01
+            sta scrollDirection
     :
 
-    lda buttons1
-    sta previousButtons1
+    ldx yscroll
+    lda pauseScroll
+    bne @scrollPaused                    ; if pauseScroll == 0
+        lda buttons1
+        eor previousButtons1    ; check which buttons changed
+        and #BUTTON_UP
+        beq :+                  ; did UP change?
+            lda buttons1
+            and #BUTTON_UP
+            beq :+              ; is UP pushed?
+                lda scrollDelay
+                sec
+                sbc #1
+                and #$0f
+                sta scrollDelay
+        :
+        lda buttons1
+        eor previousButtons1    ; check which buttons changed
+        and #BUTTON_DOWN
+        beq :+                  ; did DOWN change?
+            lda buttons1
+            and #BUTTON_DOWN
+            beq :+              ; is DOWN pushed?
+                lda scrollDelay
+                clc
+                adc #1
+                and #$0f
+                sta scrollDelay
+        :
+        lda frameCounter
+        cmp scrollDelay
+        bcc @exitScrollHandler
+            lda scrollDirection
+            bne :+  ; scrollDirection == 0
+                inx 
+                jmp :++
+            :       ; else
+                dex
+            :
+            lda #0
+            sta frameCounter
+            jmp @exitScrollHandler
+
+    @scrollPaused:           ; else
+        lda buttons1
+        and #BUTTON_UP
+        beq :+ 
+            dex
+            jmp :+
+        :
+        lda buttons1
+        and #BUTTON_DOWN
+        beq :+ 
+            inx
+        :
+    @exitScrollHandler:
+        lda buttons1
+        sta previousButtons1
 
     cpx #250
     bcc :+

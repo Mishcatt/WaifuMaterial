@@ -17,6 +17,9 @@
     xscroll:    .res 1
     yscroll:    .res 1
     pauseScroll: .res 1
+    frameCounter: .res 1
+    scrollDelay: .res 1
+    scrollDirection: .res 1
 
     currentNametable: .res 1
 

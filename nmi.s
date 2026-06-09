@@ -11,6 +11,7 @@ nmi:
     lda nmibank
     tay
     sta loadBank, y
+    inc frameCounter
 
     @check_dma_flag:
         ; lda dmaflag
